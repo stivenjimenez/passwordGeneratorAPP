@@ -3,7 +3,7 @@ const copiedText = document.getElementById("copied-text");
 const copiedBtn = document.getElementById("copied-btn");
 
 const charaterLength = document.getElementById("character-Length");
-const inputRage = document.getElementById("password-length-input");
+const inputRange = document.getElementById("password-length-input");
 
 const hasLowercaseInput = document.getElementById("hasLowercase");
 const hasUppercaseInput = document.getElementById("hasUppercase");
@@ -19,16 +19,16 @@ const passwordStrengthIndicator = document.getElementById(
 
 const generateBtn = document.getElementById("generate-button");
 
-const strengthColors = {
+const strengthStyles = {
   "Too weak!": "border-2 w-2 ml-2 bg-coral-red border-coral-red",
   Weak: "border-2 w-2 ml-2 bg-sunset-peach border-sunset-peach",
   Medium: "border-2 w-2 ml-2 bg-honey-yellow border-honey-yellow",
   Strong: "border-2 w-2 ml-2 bg-mint-green border-mint-green",
-  none: "border-2 w-2 ml-2 ",
+  default: "border-2 w-2 ml-2 ",
 };
 
-charaterLength.innerText = inputRage.value;
-inputRage.addEventListener("input", (e) => {
+charaterLength.innerText = inputRange.value;
+inputRange.addEventListener("input", (e) => {
   charaterLength.innerText = e.target.value;
 });
 
@@ -47,7 +47,7 @@ generateBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
   const password = generatePassword(
-    inputRage.value,
+    inputRange.value,
     hasLowercaseInput.checked,
     hasUppercaseInput.checked,
     hasNumbersInput.checked,
@@ -56,6 +56,59 @@ generateBtn.addEventListener("click", (e) => {
 
   passwordInput.value = password;
 });
+
+function updateStrengthStyles(level, status) {
+  for (let i = 1; i < 5; i++) {
+    if (i <= level) {
+      passwordStrengthIndicator.children[i].classList = strengthStyles[status];
+    } else {
+      passwordStrengthIndicator.children[i].classList =
+        strengthStyles["default"];
+    }
+  }
+}
+
+// Categorizar la fortaleza de la contraseña
+function categorizePasswordStrength(strength) {
+  if (strength <= 1) {
+    passwordStrengthStatus.innerText = "Too weak!";
+    updateStrengthStyles(1, "Too weak!");
+  } else if (strength === 2) {
+    passwordStrengthStatus.innerText = "Weak";
+    updateStrengthStyles(2, "Weak");
+  } else if (strength === 3) {
+    passwordStrengthStatus.innerText = "Medium";
+    updateStrengthStyles(3, "Medium");
+  } else {
+    passwordStrengthStatus.innerText = "Strong";
+    updateStrengthStyles(4, "Strong");
+  }
+}
+
+function checkPasswordStrength(password) {
+  let strength = 0;
+
+  // Verificar la longitud de la contraseña
+  if (password.length >= 8 && password.length <= 12) {
+    strength += 1;
+  } else if (password.length > 12) {
+    strength += 2;
+  }
+
+  // Verificar el uso de mayúsculas, minúsculas y símbolos
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+  const hasSymbol = /[!@#$%^&*()_+=-]/.test(password);
+
+  if (hasUppercase && hasLowercase) {
+    strength += 1;
+  }
+  if (hasSymbol) {
+    strength += 1;
+  }
+
+  categorizePasswordStrength(strength);
+}
 
 function generatePassword(
   length,
@@ -83,66 +136,4 @@ function generatePassword(
 
   checkPasswordStrength(password);
   return password;
-}
-
-function checkPasswordStrength(password) {
-  let strength = 0;
-
-  // Verificar la longitud de la contraseña
-  if (password.length >= 8 && password.length <= 12) {
-    strength += 1;
-  } else if (password.length > 12) {
-    strength += 2;
-  }
-
-  // Verificar el uso de mayúsculas, minúsculas y símbolos
-  const hasUppercase = /[A-Z]/.test(password);
-  const hasLowercase = /[a-z]/.test(password);
-  const hasSymbol = /[!@#$%^&*()_+=-]/.test(password);
-
-  if (hasUppercase && hasLowercase) {
-    strength += 1;
-  }
-  if (hasSymbol) {
-    strength += 1;
-  }
-
-  // Categorizar la fortaleza de la contraseña
-  if (strength <= 1) {
-    passwordStrengthStatus.innerText = "Too weak!";
-    passwordStrengthIndicator.children[1].classList =
-      strengthColors["Too weak!"];
-    passwordStrengthIndicator.children[2].classList = strengthColors["none"];
-    passwordStrengthIndicator.children[3].classList = strengthColors["none"];
-    passwordStrengthIndicator.children[4].classList = strengthColors["none"];
-
-    return "Too weak!";
-  } else if (strength === 2) {
-    passwordStrengthStatus.innerText = "Weak";
-
-    passwordStrengthIndicator.children[1].classList = strengthColors["Weak"];
-    passwordStrengthIndicator.children[2].classList = strengthColors["Weak"];
-    passwordStrengthIndicator.children[3].classList = strengthColors["none"];
-    passwordStrengthIndicator.children[4].classList = strengthColors["none"];
-    return "Weak";
-  } else if (strength === 3) {
-    passwordStrengthStatus.innerText = "Medium";
-
-    passwordStrengthIndicator.children[1].classList = strengthColors["Medium"];
-    passwordStrengthIndicator.children[2].classList = strengthColors["Medium"];
-    passwordStrengthIndicator.children[3].classList = strengthColors["Medium"];
-    passwordStrengthIndicator.children[4].classList = strengthColors["none"];
-
-    return "Medium";
-  } else {
-    passwordStrengthStatus.innerText = "Strong";
-
-    passwordStrengthIndicator.children[1].classList = strengthColors["Strong"];
-    passwordStrengthIndicator.children[2].classList = strengthColors["Strong"];
-    passwordStrengthIndicator.children[3].classList = strengthColors["Strong"];
-    passwordStrengthIndicator.children[4].classList = strengthColors["Strong"];
-    passwordStrengthIndicator.children[4].classList = strengthColors["Strong"];
-
-    return "Strong";
-  }
 }
