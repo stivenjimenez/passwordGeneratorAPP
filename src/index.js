@@ -43,8 +43,19 @@ copiedBtn.addEventListener("click", () => {
   }, 1000);
 });
 
+function hasSelection() {
+  return (
+    hasLowercaseInput.checked ||
+    hasUppercaseInput.checked ||
+    hasNumbersInput.checked ||
+    hasSymbolsInput.checked
+  );
+}
+
 generateBtn.addEventListener("click", (e) => {
   e.preventDefault();
+
+  if (!hasSelection()) return;
 
   const password = generatePassword(
     inputRange.value,
