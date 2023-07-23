@@ -9,14 +9,17 @@
 ![App Preview](https://github.com/stivenjimenez/passwordGeneratorAPP/assets/58489695/0a666afc-51b9-4280-90bc-3395d97b8480)
 
 ## 🛠️ Construido con
+
 - HTML5: para la estructura base de la aplicación.
 - Tailwind CSS: para estilizar la aplicación de manera personalizada y elegante.
 - Javascript Vanilla: para brindar la funcionalidad completa del generador de contraseñas.
 
 ## 📜 Licencia
+
 Este proyecto está bajo la licencia MIT.
 
 ## 🔄 Feedback
+
 Si tienes alguna sugerencia o comentario, no dudes en compartirlo. ¡Tu feedback es muy valioso para mí y para el crecimiento del proyecto!
 
 #DesarrolloWeb #FrontendMentor #HTML #TailwindCSS #Javascript
